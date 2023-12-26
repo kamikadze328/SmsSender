@@ -5,13 +5,6 @@ import android.provider.Telephony
 import com.kamikadze328.smssender.model.SmsContent
 
 class GetSmsInfoUseCase {
-    companion object {
-        private val instance: GetSmsInfoUseCase by lazy {
-            GetSmsInfoUseCase()
-        }
-
-        fun instance(): GetSmsInfoUseCase = instance
-    }
 
     fun invoke(intent: Intent): SmsContent {
         val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)

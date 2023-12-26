@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.update
 
 
 class MainViewModel(
-    private val permissionManager: PermissionManager = PermissionManager.instance(),
+    private val permissionManager: PermissionManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(

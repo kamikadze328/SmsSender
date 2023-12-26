@@ -8,17 +8,8 @@ import android.util.Log
 
 
 class ContactsManager(
-    private val permissionManager: PermissionManager = PermissionManager.instance(),
+    private val permissionManager: PermissionManager,
 ) {
-    companion object {
-
-        private val _instance by lazy {
-            ContactsManager()
-        }
-
-        fun instance(): ContactsManager = _instance
-    }
-
     fun getContactName(context: Context, phoneNumber: String?): String? {
         Log.d("kek", "getContactName: $phoneNumber")
         if (phoneNumber.isNullOrBlank()) return null

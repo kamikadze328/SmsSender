@@ -10,19 +10,11 @@ import com.kamikadze328.smssender.model.SmsSenderInfo
 
 
 class ProcessSmsReceivedUseCase(
-    private val smsRepository: SmsRepository = SmsRepository.instance(),
-    private val getSmsReceiverUseCase: GetSmsReceiverUseCase = GetSmsReceiverUseCase.instance(),
-    private val getSmsInfoUseCase: GetSmsInfoUseCase = GetSmsInfoUseCase.instance(),
-    private val getSmsSenderUseCase: GetSmsSenderUseCase = GetSmsSenderUseCase.instance(),
+    private val smsRepository: SmsRepository,
+    private val getSmsReceiverUseCase: GetSmsReceiverUseCase,
+    private val getSmsInfoUseCase: GetSmsInfoUseCase,
+    private val getSmsSenderUseCase: GetSmsSenderUseCase,
 ) {
-    companion object {
-        private val instance: ProcessSmsReceivedUseCase by lazy {
-            ProcessSmsReceivedUseCase()
-        }
-
-        fun instance(): ProcessSmsReceivedUseCase = instance
-    }
-
     suspend fun onReceiveNewSms(context: Context, intent: Intent) {
         val sms = makeSmsDto(context, intent)
         smsRepository.send(context, sms)

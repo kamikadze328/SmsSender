@@ -11,15 +11,6 @@ import com.kamikadze328.smssender.model.SmsSenderInfo
 import java.util.Date
 
 class SmsDbMapper {
-
-    companion object {
-        private val instance: SmsDbMapper by lazy {
-            SmsDbMapper()
-        }
-
-        fun instance(): SmsDbMapper = instance
-    }
-
     fun toDb(sms: Sms): SmsDb? {
         return SmsDb(
             info = sms.info.toDb(),
@@ -30,10 +21,10 @@ class SmsDbMapper {
 
     private fun SmsReceiver.toDb(): SmsReceiverDb? {
         return SmsReceiverDb(
-            phone = phone?.toString() ?: return null,
+            phone = phone ?: return null,
             simSlot = simSlot,
             cardId = cardId,
-            displayName = displayName?.toString(),
+            displayName = displayName,
             contact = contact,
         )
     }

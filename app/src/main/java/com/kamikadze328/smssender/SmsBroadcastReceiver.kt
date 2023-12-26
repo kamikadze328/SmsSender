@@ -9,13 +9,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-class SmsBroadcastReceiver : BroadcastReceiver() {
-    private val processor by lazy {
-        ProcessSmsReceivedUseCase.instance()
-    }
+class SmsBroadcastReceiver : BroadcastReceiver(), KoinComponent {
+    private val processor: ProcessSmsReceivedUseCase by inject()
 
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action == Telephony.Sms.Intents.SMS_RECEIVED_ACTION) {

@@ -4,13 +4,16 @@ androidGradlePlugin = "8.2.0"
 androidKtx = "1.12.0"
 appcompat = "1.6.1"
 coroutines = "1.7.3"
-kotlin = "1.9.22"
-ksp = "1.9.22-1.0.16"
+koin = "3.5.3"
+kotlin = "1.9.21"
+# depends on kotlin version
+ksp = "1.9.21-1.0.15"
 ktor = "2.3.3"
 lifecycle = "2.6.2"
 material = "1.11.0"
 room = "2.6.1"
-serialization = "1.5.1"
+# depends on kotlin version
+kotlinSerialization = "1.6.2"
 
 [libraries]
 # Android dependencies
@@ -30,12 +33,18 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # Kotlin dependencies
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 
 # 3-rd party dependencies
-ktor-andoird = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
-ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
-ktor-logging = { group = "io.ktor", name = "ktor-client-logging-jvm", version.ref = "ktor" }
+ktor-bom = { group = "io.ktor", name = "ktor-bom", version.ref = "ktor" }
+ktor-andoird = { group = "io.ktor", name = "ktor-client-android" }
+ktor-serialization = { group = "io.ktor", name = "ktor-client-serialization" }
+ktor-logging = { group = "io.ktor", name = "ktor-client-logging-jvm" }
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin = { group = "io.insert-koin", name = "koin-android" }
+koin-core = { group = "io.insert-koin", name = "koin-core" }
+koin-core-coroutines = { group = "io.insert-koin", name = "koin-core-coroutines" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

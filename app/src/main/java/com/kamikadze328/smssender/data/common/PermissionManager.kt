@@ -9,12 +9,6 @@ import androidx.core.content.ContextCompat
 class PermissionManager() {
     companion object {
         const val MY_PERMISSIONS_REQUEST_SMS = 101
-
-        private val _instance by lazy {
-            PermissionManager()
-        }
-
-        fun instance(): PermissionManager = _instance
     }
 
     fun areAllPermissionsGranted(context: Context, permissions: List<String>): Boolean {

@@ -7,16 +7,8 @@ import com.kamikadze328.smssender.data.common.ContactsManager
 import com.kamikadze328.smssender.model.SmsSenderInfo
 
 class GetSmsSenderUseCase(
-    private val contactsManager: ContactsManager = ContactsManager.instance(),
+    private val contactsManager: ContactsManager,
 ) {
-    companion object {
-        private val instance: GetSmsSenderUseCase by lazy {
-            GetSmsSenderUseCase()
-        }
-
-        fun instance(): GetSmsSenderUseCase = instance
-    }
-
     fun invoke(context: Context, intent: Intent): SmsSenderInfo {
         val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
         val possiblePhone = messages.firstOrNull()?.originatingAddress

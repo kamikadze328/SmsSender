@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SmsReceiver(
-    val phone: CharSequence?,
+    val phone: String?,
     val simSlot: Int?,
     val cardId: Int?,
-    val displayName: CharSequence?,
+    val displayName: String?,
     val contact: String?,
 ) {
     companion object {

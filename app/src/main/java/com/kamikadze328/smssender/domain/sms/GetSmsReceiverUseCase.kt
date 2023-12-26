@@ -16,16 +16,10 @@ import com.kamikadze328.smssender.data.common.PermissionManager
 import com.kamikadze328.smssender.model.SmsReceiver
 
 class GetSmsReceiverUseCase(
-    private val permissionManager: PermissionManager = PermissionManager.instance(),
-    private val contactsManager: ContactsManager = ContactsManager.instance(),
+    private val permissionManager: PermissionManager,
+    private val contactsManager: ContactsManager,
 ) {
     companion object {
-        private val instance: GetSmsReceiverUseCase by lazy {
-            GetSmsReceiverUseCase()
-        }
-
-        fun instance(): GetSmsReceiverUseCase = instance
-
         private val SIM_INFO_POSSIBLE_EXTRA_NAMES = listOf(
             "simSlot",
             "phone",
@@ -111,12 +105,12 @@ class GetSmsReceiverUseCase(
 
             val phone = when {
                 phone1.isNotBlank() -> phone1
-                !phone2.isNullOrBlank() -> phone2
+                !phone2.isNullOrBlank() -> phone2.toString()
                 !phone3.isNullOrBlank() -> phone3
                 else -> null
             }
 
-            val name = subInfo?.displayName
+            val name = subInfo?.displayName?.toString()
             SmsReceiver(
                 phone = phone,
                 simSlot = subInfo?.simSlotIndex ?: getSimSlot(intent),

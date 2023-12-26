@@ -2,16 +2,17 @@ package com.kamikadze328.smssender
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.kamikadze328.smssender.data.db.AppDatabase
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel: MainViewModel by viewModels()
+class MainActivity : AppCompatActivity(), KoinComponent {
+    private val viewModel:MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

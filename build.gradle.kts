@@ -4,4 +4,5 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.room) apply false
+    kotlin("plugin.serialization") version "1.9.21" apply false
 }

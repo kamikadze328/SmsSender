@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -54,30 +55,37 @@ room {
 }
 
 dependencies {
+    // Android
     implementation(libs.androidx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
-
-    implementation(libs.coroutines.android)
-    implementation(libs.coroutines.core)
-    implementation(libs.serialization)
-
-    implementation(libs.ktor.andoird)
-    implementation(libs.ktor.serialization)
-    implementation(libs.ktor.logging)
-
-
     implementation(libs.viewmodel)
-
     implementation(libs.lifecycle.service)
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
 
+    // Kotlin
+    implementation(libs.coroutines.android)
+    implementation(libs.coroutines.core)
+    implementation(libs.kotlin.serialization)
 
+    // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
+
+    // 3rd party
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.andoird)
+    implementation(libs.ktor.serialization)
+    implementation(libs.ktor.logging)
+
+    implementation(platform(libs.koin.bom))
+    implementation(libs.koin)
+    implementation(libs.koin.core)
+    implementation(libs.koin.core.coroutines)
+    implementation(libs.koin.ktor)
 }

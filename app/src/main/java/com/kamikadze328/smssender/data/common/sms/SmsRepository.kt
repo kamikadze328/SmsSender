@@ -12,17 +12,9 @@ import kotlinx.serialization.json.Json
 
 
 class SmsRepository(
-    private val smsDbMapper: SmsDbMapper = SmsDbMapper.instance(),
-    private val telegramRepository: TelegramRepository = TelegramRepository.instance(),
+    private val smsDbMapper: SmsDbMapper,
+    private val telegramRepository: TelegramRepository,
 ) {
-    companion object {
-        private val _instance by lazy {
-            SmsRepository()
-        }
-
-        fun instance(): SmsRepository = _instance
-    }
-
     private val format by lazy {
         Json { prettyPrint = true }
     }
