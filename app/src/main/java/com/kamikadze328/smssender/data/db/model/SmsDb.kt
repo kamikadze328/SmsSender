@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.db.data
+package com.kamikadze328.smssender.data.db.model
 
 import androidx.room.Embedded
 import androidx.room.Relation

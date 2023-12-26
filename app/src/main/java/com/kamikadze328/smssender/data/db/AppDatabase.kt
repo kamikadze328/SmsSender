@@ -1,16 +1,16 @@
-package com.kamikadze328.smssender.db
+package com.kamikadze328.smssender.data.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.kamikadze328.smssender.db.dao.SmsDao
-import com.kamikadze328.smssender.db.dao.SmsReceiverDao
-import com.kamikadze328.smssender.db.dao.SmsSenderDao
-import com.kamikadze328.smssender.db.data.SmsContentDb
-import com.kamikadze328.smssender.db.data.SmsReceiverDb
-import com.kamikadze328.smssender.db.data.SmsSenderDb
+import com.kamikadze328.smssender.data.db.dao.SmsDao
+import com.kamikadze328.smssender.data.db.dao.SmsReceiverDao
+import com.kamikadze328.smssender.data.db.dao.SmsSenderDao
+import com.kamikadze328.smssender.data.db.model.SmsContentDb
+import com.kamikadze328.smssender.data.db.model.SmsReceiverDb
+import com.kamikadze328.smssender.data.db.model.SmsSenderDb
 
 @Database(
     entities = [SmsSenderDb::class, SmsReceiverDb::class, SmsContentDb::class],

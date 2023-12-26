@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.domain.common
+package com.kamikadze328.smssender.data.common
 
 import android.app.Activity
 import android.content.Context

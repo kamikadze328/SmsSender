@@ -1,13 +1,13 @@
-package com.kamikadze328.smssender.domain.sms
+package com.kamikadze328.smssender.data.common.sms
 
 import android.content.Context
 import androidx.room.withTransaction
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kamikadze328.smssender.db.AppDatabase
-import com.kamikadze328.smssender.db.SmsDbMapper
-import com.kamikadze328.smssender.domain.data.Sms
-import com.kamikadze328.smssender.domain.network.TelegramApi
+import com.kamikadze328.smssender.data.db.AppDatabase
+import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
+import com.kamikadze328.smssender.model.Sms
+import com.kamikadze328.smssender.data.network.TelegramApi
 import io.ktor.client.statement.HttpResponse
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString

@@ -2,18 +2,18 @@ package com.kamikadze328.smssender.domain.sms
 
 import android.content.Intent
 import android.provider.Telephony
-import com.kamikadze328.smssender.domain.data.SmsContent
+import com.kamikadze328.smssender.model.SmsContent
 
-class SmsInfoResolver {
+class GetSmsInfoUseCase {
     companion object {
-        private val instance: SmsInfoResolver by lazy {
-            SmsInfoResolver()
+        private val instance: GetSmsInfoUseCase by lazy {
+            GetSmsInfoUseCase()
         }
 
-        fun instance(): SmsInfoResolver = instance
+        fun instance(): GetSmsInfoUseCase = instance
     }
 
-    fun getSmsInfo(intent: Intent): SmsContent {
+    fun invoke(intent: Intent): SmsContent {
         val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
         val smsBody = buildString {
             messages.forEach {

@@ -1,13 +1,13 @@
-package com.kamikadze328.smssender.db
+package com.kamikadze328.smssender.data.db.mapper
 
-import com.kamikadze328.smssender.db.data.SmsContentDb
-import com.kamikadze328.smssender.db.data.SmsDb
-import com.kamikadze328.smssender.db.data.SmsReceiverDb
-import com.kamikadze328.smssender.db.data.SmsSenderDb
-import com.kamikadze328.smssender.domain.data.Sms
-import com.kamikadze328.smssender.domain.data.SmsContent
-import com.kamikadze328.smssender.domain.data.SmsReceiver
-import com.kamikadze328.smssender.domain.data.SmsSenderInfo
+import com.kamikadze328.smssender.data.db.model.SmsContentDb
+import com.kamikadze328.smssender.data.db.model.SmsDb
+import com.kamikadze328.smssender.data.db.model.SmsReceiverDb
+import com.kamikadze328.smssender.data.db.model.SmsSenderDb
+import com.kamikadze328.smssender.model.Sms
+import com.kamikadze328.smssender.model.SmsContent
+import com.kamikadze328.smssender.model.SmsReceiver
+import com.kamikadze328.smssender.model.SmsSenderInfo
 import java.util.Date
 
 class SmsDbMapper {

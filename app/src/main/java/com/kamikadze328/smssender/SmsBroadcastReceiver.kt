@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.provider.Telephony
-import com.kamikadze328.smssender.domain.sms.SmsReceiveProcessor
+import com.kamikadze328.smssender.domain.sms.ProcessSmsReceivedUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
@@ -14,7 +14,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
     private val processor by lazy {
-        SmsReceiveProcessor.instance()
+        ProcessSmsReceivedUseCase.instance()
     }
 
     override fun onReceive(context: Context, intent: Intent) {

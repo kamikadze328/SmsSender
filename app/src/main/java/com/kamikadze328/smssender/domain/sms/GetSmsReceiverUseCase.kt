@@ -11,20 +11,20 @@ import android.telephony.SubscriptionInfo
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
-import com.kamikadze328.smssender.domain.common.ContactsManager
-import com.kamikadze328.smssender.domain.common.PermissionManager
-import com.kamikadze328.smssender.domain.data.SmsReceiver
+import com.kamikadze328.smssender.data.common.ContactsManager
+import com.kamikadze328.smssender.data.common.PermissionManager
+import com.kamikadze328.smssender.model.SmsReceiver
 
-class SmsReceiverResolver(
+class GetSmsReceiverUseCase(
     private val permissionManager: PermissionManager = PermissionManager.instance(),
     private val contactsManager: ContactsManager = ContactsManager.instance(),
 ) {
     companion object {
-        private val instance: SmsReceiverResolver by lazy {
-            SmsReceiverResolver()
+        private val instance: GetSmsReceiverUseCase by lazy {
+            GetSmsReceiverUseCase()
         }
 
-        fun instance(): SmsReceiverResolver = instance
+        fun instance(): GetSmsReceiverUseCase = instance
 
         private val SIM_INFO_POSSIBLE_EXTRA_NAMES = listOf(
             "simSlot",
@@ -44,7 +44,7 @@ class SmsReceiverResolver(
         )
     }
 
-    fun getSmsReceiverInfo(context: Context, intent: Intent): SmsReceiver {
+    fun invoke(context: Context, intent: Intent): SmsReceiver {
         if (!hasPermissionsForGettingPhoneNumber(context)) return SmsReceiver.EMPTY
 
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

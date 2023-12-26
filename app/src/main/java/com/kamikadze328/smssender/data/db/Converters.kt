@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.db
+package com.kamikadze328.smssender.data.db
 
 import androidx.room.TypeConverter
 import java.util.Date

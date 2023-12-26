@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.db.data
+package com.kamikadze328.smssender.data.db.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey

@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.domain
+package com.kamikadze328.smssender
 
 import android.Manifest
 import android.app.Activity
@@ -12,7 +12,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.lifecycle.ViewModel
-import com.kamikadze328.smssender.domain.common.PermissionManager
+import com.kamikadze328.smssender.data.common.PermissionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

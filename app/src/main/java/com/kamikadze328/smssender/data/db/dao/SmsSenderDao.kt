@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.db.dao
+package com.kamikadze328.smssender.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.kamikadze328.smssender.db.data.SmsSenderDb
+import com.kamikadze328.smssender.data.db.model.SmsSenderDb
 
 @Dao
 interface SmsSenderDao {

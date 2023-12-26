@@ -9,8 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kamikadze328.smssender.db.AppDatabase
-import com.kamikadze328.smssender.domain.MainViewModel
+import com.kamikadze328.smssender.data.db.AppDatabase
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -36,15 +35,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-        }
-    }
-
-    private fun startForegroundService() {
-        val intent = Intent(this, ForegroundService::class.java)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-            applicationContext.startForegroundService(intent)
-        } else {
-            startService(intent)
         }
     }
 

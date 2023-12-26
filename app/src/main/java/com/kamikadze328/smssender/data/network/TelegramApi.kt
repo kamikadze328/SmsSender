@@ -1,4 +1,4 @@
-package com.kamikadze328.smssender.domain.network
+package com.kamikadze328.smssender.data.network
 
 import android.util.Log
 import com.kamikadze328.smssender.BuildConfig
