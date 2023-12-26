@@ -2,19 +2,18 @@ package com.kamikadze328.smssender.data.common.sms
 
 import android.content.Context
 import androidx.room.withTransaction
+import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.db.AppDatabase
 import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
-import com.kamikadze328.smssender.data.network.TelegramApi
 import com.kamikadze328.smssender.model.Sms
-import io.ktor.client.statement.HttpResponse
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 
 class SmsRepository(
-    private val telegramApi: TelegramApi = TelegramApi.instance(),
     private val smsDbMapper: SmsDbMapper = SmsDbMapper.instance(),
+    private val telegramRepository: TelegramRepository = TelegramRepository.instance(),
 ) {
     companion object {
         private val _instance by lazy {
@@ -51,8 +50,8 @@ class SmsRepository(
         getDatabase(context).smsDao().update(messageId, true)
     }
 
-    private suspend fun onMessageSent(context: Context, response: HttpResponse, messageId: Long) {
-        if (response.status.value in 200..299) {
+    private suspend fun onMessageSent(context: Context, isSuccess: Boolean, messageId: Long) {
+        if (isSuccess) {
             onMessageSent(context, messageId)
         }
     }
@@ -77,8 +76,8 @@ class SmsRepository(
         val json = toJsonString(smsDto)
 
         try {
-            val response = telegramApi.sendToTelegram(json)
-            onMessageSent(context, response, smsDto.info.messageId)
+            val isSuccess = telegramRepository.sendMessage(json)
+            onMessageSent(context, isSuccess, smsDto.info.messageId)
         } catch (e: Exception) {
             e.printStackTrace()
         }

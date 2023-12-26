@@ -2,21 +2,20 @@ import java.util.Properties
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("androidx.room")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
-
-val localProperties: Properties = gradleLocalProperties(rootDir)
-val tgChatId: String = localProperties.getProperty("tg.chat.id", "")
-val tgBotId: String = localProperties.getProperty("tg.bot.id", "")
 
 android {
     namespace = "com.kamikadze328.smssender"
     compileSdk = 34
 
     defaultConfig {
+        val localProperties: Properties = gradleLocalProperties(rootDir)
+        val tgChatId: String = localProperties.getProperty("tg.chat.id", "")
+        val tgBotId: String = localProperties.getProperty("tg.bot.id", "")
         buildConfigField("String", "TG_CHAT_ID", tgChatId)
         buildConfigField("String", "TG_BOT_ID", tgBotId)
 
