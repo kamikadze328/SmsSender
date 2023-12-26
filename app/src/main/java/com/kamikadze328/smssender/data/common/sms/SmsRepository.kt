@@ -2,12 +2,10 @@ package com.kamikadze328.smssender.data.common.sms
 
 import android.content.Context
 import androidx.room.withTransaction
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import com.kamikadze328.smssender.data.db.AppDatabase
 import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
-import com.kamikadze328.smssender.model.Sms
 import com.kamikadze328.smssender.data.network.TelegramApi
+import com.kamikadze328.smssender.model.Sms
 import io.ktor.client.statement.HttpResponse
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
@@ -24,12 +22,6 @@ class SmsRepository(
         }
 
         fun instance(): SmsRepository = _instance
-    }
-
-    private val gson: Gson by lazy {
-        GsonBuilder()
-            .setPrettyPrinting()
-            .create()
     }
 
     private val format by lazy {
@@ -74,7 +66,8 @@ class SmsRepository(
         return try {
             format.encodeToString(smsDto)
         } catch (e: SerializationException) {
-            gson.toJson(smsDto)
+            e.printStackTrace()
+            ""
         }
             .replace("\n", "%0A")
             .replace("\"", "")

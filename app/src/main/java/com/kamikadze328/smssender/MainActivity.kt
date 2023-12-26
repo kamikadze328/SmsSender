@@ -1,7 +1,5 @@
 package com.kamikadze328.smssender
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -44,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        viewModel.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+        viewModel.onRequestPermissionsResult(requestCode, grantResults, this)
     }
 
     private fun showToast(text: String) {

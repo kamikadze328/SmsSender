@@ -34,13 +34,11 @@ class MainViewModel(
 
     fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
         grantResults: IntArray,
         activity: Activity,
     ) {
         permissionManager.onRequestPermissionsResult(
             requestCode = requestCode,
-            permissions = permissions,
             grantResults = grantResults,
             onSuccess = {
                 startForegroundService()
