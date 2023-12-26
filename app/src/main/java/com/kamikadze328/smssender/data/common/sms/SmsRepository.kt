@@ -9,6 +9,7 @@ import com.kamikadze328.smssender.model.Sms
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.net.URLEncoder
 
 
 class SmsRepository(
@@ -54,14 +55,13 @@ class SmsRepository(
     }
 
     private fun toJsonString(smsDto: Sms): String {
-        return try {
+        val json = try {
             format.encodeToString(smsDto)
         } catch (e: SerializationException) {
             e.printStackTrace()
             ""
-        }
-            .replace("\n", "%0A")
-            .replace("\"", "")
+        }.replace("\"", "")
+        return URLEncoder.encode(json, "utf-8")
     }
 
     private suspend fun sendToTelegram(context: Context, smsDto: Sms) {
