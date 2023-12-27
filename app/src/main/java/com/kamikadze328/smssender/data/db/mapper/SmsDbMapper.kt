@@ -59,6 +59,7 @@ class SmsDbMapper {
             phone = phone,
         )
     }
+
     private fun SmsReceiverDb.toDomain(): SmsReceiver {
         return SmsReceiver(
             phone = phone,
@@ -68,6 +69,7 @@ class SmsDbMapper {
             contact = contact,
         )
     }
+
     private fun SmsContentDb.toDomain(): SmsContent {
         return SmsContent(
             messageId = messageId,

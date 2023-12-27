@@ -11,11 +11,7 @@ import com.kamikadze328.smssender.data.db.model.SmsDb
 @Dao
 interface SmsDao {
     @Transaction
-    @Query("SELECT * FROM SmsContentDb")
-    fun getAll(): List<SmsDb>
-
-    @Transaction
-    @Query("SELECT * FROM SmsContentDb WHERE wasSent = 0")
+    @Query("SELECT * FROM SmsContentDb WHERE wasSent = 0 ORDER BY dateTime ASC")
     fun getAllNotSent(): List<SmsDb>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -24,8 +20,4 @@ interface SmsDao {
     @Transaction
     @Query("UPDATE SmsContentDb SET wasSent = :wasSent WHERE messageId = :id")
     suspend fun update(id: Long, wasSent: Boolean)
-
-    @Transaction
-    @Query("SELECT * FROM SmsContentDb ORDER BY dateTime DESC")
-    suspend fun getAllSortedByDate(): List<SmsDb>
 }

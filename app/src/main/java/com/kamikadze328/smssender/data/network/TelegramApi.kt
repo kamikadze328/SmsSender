@@ -15,7 +15,6 @@ class TelegramApi {
     suspend fun sendToTelegram(text: String, botToken: String, chatId: String): HttpResponse {
         val url = "$BASE_LINK/bot$botToken/sendMessage?chat_id=$chatId&text=$text"
         Log.d("kek", "sendToTelegram: text - $text")
-        Log.d("kek", "sendToTelegram: url - $url")
 
         return client.request(url)
     }
