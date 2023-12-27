@@ -22,11 +22,5 @@ class TelegramApi {
 
     companion object {
         private const val BASE_LINK = "https://api.telegram.org"
-
-        private val instance: TelegramApi by lazy {
-            TelegramApi()
-        }
-
-        fun instance(): TelegramApi = instance
     }
 }

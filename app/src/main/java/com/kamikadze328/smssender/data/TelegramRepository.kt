@@ -4,7 +4,7 @@ import com.kamikadze328.smssender.BuildConfig
 import com.kamikadze328.smssender.data.network.TelegramApi
 
 class TelegramRepository(
-    private val telegramApi: TelegramApi = TelegramApi.instance(),
+    private val telegramApi: TelegramApi,
 ) {
     private fun getToken(): String = BuildConfig.TG_BOT_ID
 

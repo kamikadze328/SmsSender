@@ -17,7 +17,7 @@ class ProcessSmsReceivedUseCase(
 ) {
     suspend fun onReceiveNewSms(context: Context, intent: Intent) {
         val sms = makeSmsDto(context, intent)
-        smsRepository.send(context, sms)
+        smsRepository.send(sms)
     }
 
     private fun makeSmsDto(context: Context, intent: Intent): Sms {

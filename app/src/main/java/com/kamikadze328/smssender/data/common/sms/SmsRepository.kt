@@ -1,6 +1,5 @@
 package com.kamikadze328.smssender.data.common.sms
 
-import android.content.Context
 import androidx.room.withTransaction
 import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.db.AppDatabase
@@ -11,13 +10,9 @@ import java.net.URLEncoder
 class SmsRepository(
     private val smsDbMapper: SmsDbMapper,
     private val telegramRepository: TelegramRepository,
+    private val database: AppDatabase,
 ) {
-    private fun getDatabase(context: Context): AppDatabase {
-        return AppDatabase.getInstance(context)
-    }
-
-    private suspend fun saveToDb(context: Context, smsDto: Sms) {
-        val database = getDatabase(context)
+    private suspend fun saveToDb(smsDto: Sms) {
         val smsDb = smsDbMapper.toDb(smsDto) ?: return
 
         database.withTransaction {
@@ -31,19 +26,19 @@ class SmsRepository(
         }
     }
 
-    private suspend fun onMessageSuccessfullySent(context: Context, messageId: Long) {
-        getDatabase(context).smsDao().update(messageId, true)
+    private suspend fun onMessageSuccessfullySent(messageId: Long) {
+        database.smsDao().update(messageId, true)
     }
 
-    private suspend fun onMessageSent(context: Context, isSuccess: Boolean, messageId: Long) {
+    private suspend fun onMessageSent(isSuccess: Boolean, messageId: Long) {
         if (isSuccess) {
-            onMessageSuccessfullySent(context, messageId)
+            onMessageSuccessfullySent(messageId)
         }
     }
 
-    suspend fun send(context: Context, smsDto: Sms) {
-        saveToDb(context, smsDto)
-        sendAllNotSent(context)
+    suspend fun send(smsDto: Sms) {
+        saveToDb(smsDto)
+        sendAllNotSent()
     }
 
     private fun beautifySms(smsDto: Sms): String {
@@ -57,21 +52,20 @@ class SmsRepository(
         return URLEncoder.encode(built, "utf-8")
     }
 
-    private suspend fun sendToTelegram(context: Context, smsDto: Sms) {
+    private suspend fun sendToTelegram(smsDto: Sms) {
         val beautifiedSms = beautifySms(smsDto)
         try {
             val isSuccess = telegramRepository.sendMessage(beautifiedSms)
-            onMessageSent(context, isSuccess, smsDto.info.messageId)
+            onMessageSent(isSuccess, smsDto.info.messageId)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private suspend fun sendAllNotSent(context: Context) {
-        val database = getDatabase(context)
+    private suspend fun sendAllNotSent() {
         val notSent = database.smsDao().getAllNotSent()
         notSent.forEach {
-            sendToTelegram(context, smsDbMapper.toDomain(it))
+            sendToTelegram(smsDbMapper.toDomain(it))
         }
     }
 }
