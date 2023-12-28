@@ -5,6 +5,7 @@ import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.common.ContactsManager
 import com.kamikadze328.smssender.data.common.PermissionManager
 import com.kamikadze328.smssender.data.common.sms.SmsRepository
+import com.kamikadze328.smssender.data.common.sms.SmsToStringConverter
 import com.kamikadze328.smssender.data.db.AppDatabase
 import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
 import com.kamikadze328.smssender.data.network.TelegramApi
@@ -32,6 +33,7 @@ val appModule = module {
     singleOf(::TelegramApi)
     singleOf(::TelegramRepository)
     singleOf(::SmsDbMapper)
+    singleOf(::SmsToStringConverter)
 
     viewModelOf(::MainViewModel)
 }

@@ -56,19 +56,18 @@ room {
 
 dependencies {
     // Android
-    implementation(libs.androidx)
+    implementation(libs.androidx.core)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.viewmodel)
     implementation(libs.lifecycle.service)
     implementation(libs.lifecycle.viewmodel)
-    implementation(libs.lifecycle.viewmodel.compose)
-    implementation(libs.lifecycle.runtime.compose)
+//    implementation(libs.lifecycle.viewmodel.compose)
+//    implementation(libs.lifecycle.runtime.compose)
 
     // Kotlin
     implementation(libs.coroutines.android)
-    implementation(libs.coroutines.core)
     implementation(libs.kotlin.serialization)
 
     // Room
@@ -82,10 +81,11 @@ dependencies {
     implementation(libs.ktor.andoird)
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
+    implementation(libs.ktor.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     implementation(platform(libs.koin.bom))
     implementation(libs.koin)
     implementation(libs.koin.core)
     implementation(libs.koin.core.coroutines)
-    implementation(libs.koin.ktor)
 }

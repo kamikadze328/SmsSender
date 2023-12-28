@@ -1,6 +1,12 @@
 <resources>
-    <string name="app_name">Sms Sender</string>
-    <string name="default_notification_channel_name">Default</string>
-    <string name="foreground_service_notification_title">Sms Sender Is Active</string>
-    <string name="foreground_service_notification_description">Watching for new sms…</string>
+    <string name="app_name" translatable="false">Sms Sender</string>
+    <string name="default_notification_channel_name" translatable="false">Default</string>
+    <string name="foreground_service_notification_title">Sms Sender Активен</string>
+    <string name="foreground_service_notification_description">Ожидание новых СМС…</string>
+    <string name="sms_receiver_unknown">Неизвестно</string>
+    <string name="sms_sender_unknown">Неизвестно</string>
+    <string name="sms_sender">Отправитель:</string>
+    <string name="sms_receiver">Получатель:</string>
+    <string name="sms_sent_when">Когда:</string>
+
 </resources>

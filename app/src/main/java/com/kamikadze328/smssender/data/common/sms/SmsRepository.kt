@@ -5,15 +5,15 @@ import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.db.AppDatabase
 import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
 import com.kamikadze328.smssender.model.Sms
-import java.net.URLEncoder
 
 class SmsRepository(
     private val smsDbMapper: SmsDbMapper,
     private val telegramRepository: TelegramRepository,
+    private val smsToStringConverter: SmsToStringConverter,
     private val database: AppDatabase,
 ) {
-    private suspend fun saveToDb(smsDto: Sms) {
-        val smsDb = smsDbMapper.toDb(smsDto) ?: return
+    private suspend fun saveToDb(sms: Sms) {
+        val smsDb = smsDbMapper.toDb(sms) ?: return
 
         database.withTransaction {
             val senderId = database.smsSenderDao().updateOrInsert(smsDb.sender)
@@ -36,27 +36,16 @@ class SmsRepository(
         }
     }
 
-    suspend fun send(smsDto: Sms) {
-        saveToDb(smsDto)
+    suspend fun send(sms: Sms) {
+        saveToDb(sms)
         sendAllNotSent()
     }
 
-    private fun beautifySms(smsDto: Sms): String {
-        val built = buildString {
-            append("Отправитель: ${smsDto.sender.name} (${smsDto.sender.phone})\n")
-            append("Получатель: ${smsDto.receiver.displayName} (${smsDto.receiver.phone})\n")
-            append("Когда: ${smsDto.info.dateTime}\n")
-            append("-------------------------------------\n\n")
-            append(smsDto.info.message)
-        }
-        return URLEncoder.encode(built, "utf-8")
-    }
-
-    private suspend fun sendToTelegram(smsDto: Sms) {
-        val beautifiedSms = beautifySms(smsDto)
+    private suspend fun sendToTelegram(sms: Sms) {
+        val beautifiedSms = smsToStringConverter.convert(sms)
         try {
             val isSuccess = telegramRepository.sendMessage(beautifiedSms)
-            onMessageSent(isSuccess, smsDto.info.messageId)
+            onMessageSent(isSuccess, sms.info.messageId)
         } catch (e: Exception) {
             e.printStackTrace()
         }

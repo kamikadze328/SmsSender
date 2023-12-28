@@ -16,11 +16,11 @@ class ProcessSmsReceivedUseCase(
     private val getSmsSenderUseCase: GetSmsSenderUseCase,
 ) {
     suspend fun onReceiveNewSms(context: Context, intent: Intent) {
-        val sms = makeSmsDto(context, intent)
+        val sms = makeSmsDomain(context, intent)
         smsRepository.send(sms)
     }
 
-    private fun makeSmsDto(context: Context, intent: Intent): Sms {
+    private fun makeSmsDomain(context: Context, intent: Intent): Sms {
         return Sms(
             info = getSmsInfo(intent),
             receiver = getSmsReceiverInfo(context, intent),

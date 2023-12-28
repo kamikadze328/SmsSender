@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="foreground_service_notification_title">Sms Sender Is Active</string>
+    <string name="foreground_service_notification_description">Watching for new sms…</string>
+    <string name="sms_receiver_unknown">Unknown</string>
+    <string name="sms_sender_unknown">Unknown</string>
+    <string name="sms_sender">Sender:</string>
+    <string name="sms_receiver">Receiver:</string>
+    <string name="sms_sent_when">When:</string>
+</resources>

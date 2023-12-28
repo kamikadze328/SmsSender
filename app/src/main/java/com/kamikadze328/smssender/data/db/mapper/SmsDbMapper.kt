@@ -8,7 +8,6 @@ import com.kamikadze328.smssender.model.Sms
 import com.kamikadze328.smssender.model.SmsContent
 import com.kamikadze328.smssender.model.SmsReceiver
 import com.kamikadze328.smssender.model.SmsSenderInfo
-import java.util.Date
 
 class SmsDbMapper {
     fun toDb(sms: Sms): SmsDb? {
@@ -41,7 +40,7 @@ class SmsDbMapper {
         return SmsContentDb(
             messageId = messageId,
             message = message,
-            dateTime = Date()
+            dateTime = dateTime,
         )
     }
 
@@ -74,7 +73,7 @@ class SmsDbMapper {
         return SmsContent(
             messageId = messageId,
             message = message,
-            dateTime = dateTime.toString(),
+            dateTime = dateTime,
         )
     }
 }
