@@ -74,6 +74,7 @@ class SmsDbMapper {
             messageId = messageId,
             message = message,
             dateTime = dateTime,
+            wasSent = wasSent,
         )
     }
 }

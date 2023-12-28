@@ -12,15 +12,25 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kamikadze328.smssender.data.common.PermissionManager
+import com.kamikadze328.smssender.data.common.sms.SmsRepository
+import com.kamikadze328.smssender.data.common.sms.SmsToStringConverter
+import com.kamikadze328.smssender.model.Sms
+import com.kamikadze328.smssender.ui.SmsList
+import com.kamikadze328.smssender.ui.SmsUi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 class MainViewModel(
     private val permissionManager: PermissionManager,
+    private val smsToStringConverter: SmsToStringConverter,
+    private val smsRepository: SmsRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -31,8 +41,52 @@ class MainViewModel(
     private var permissionsRequestCode: List<String>? = null
     private var permissionRequestCount: Int = 0
 
+    private fun onInit(event: MainUiEvent.OnInit) {
+        checkAndRequestPermissions(event.activity)
+        updateSmsList()
+    }
 
-    fun onRequestPermissionsResult(
+    private fun updateSmsList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val sms = smsRepository.getAll()
+            val smsUi = sms.map { it.toUi() }
+            _uiState.update {
+                it.copy(
+                    sms = SmsList(smsUi),
+                )
+            }
+        }
+    }
+
+    private fun Sms.toUi(): SmsUi {
+        return SmsUi(
+            receiverName = smsToStringConverter.makeReceiverString(this, true),
+            senderName = smsToStringConverter.makeSenderString(this, true),
+            text = info.message,
+            isSent = info.wasSent,
+            dateTime = smsToStringConverter.makeDateTimeString(this),
+        )
+    }
+
+    fun onEvent(event: MainUiEvent) {
+        when (event) {
+            is MainUiEvent.OnToastShown -> onToastShown()
+            is MainUiEvent.ForegroundServiceStarted -> foregroundServiceStarted()
+            is MainUiEvent.OnInit -> onInit(event)
+            is MainUiEvent.OnRefreshClicked -> onRefreshClicked()
+            is MainUiEvent.OnPermissionsResult -> onRequestPermissionsResult(
+                requestCode = event.requestCode,
+                grantResults = event.grantResults.toIntArray(),
+                activity = event.activity,
+            )
+        }
+    }
+
+    private fun onRefreshClicked() {
+        updateSmsList()
+    }
+
+    private fun onRequestPermissionsResult(
         requestCode: Int,
         grantResults: IntArray,
         activity: Activity,
@@ -50,7 +104,7 @@ class MainViewModel(
         )
     }
 
-    fun checkAndRequestPermissions(activity: Activity) {
+    private fun checkAndRequestPermissions(activity: Activity) {
         permissionRequestCount++
         if (permissionRequestCount > 3) {
             navigateToSettings(activity)
@@ -107,7 +161,7 @@ class MainViewModel(
         }
     }
 
-    fun foregroundServiceStarted() {
+    private fun foregroundServiceStarted() {
         _uiState.update {
             it.copy(
                 showForegroundService = false,
@@ -115,26 +169,11 @@ class MainViewModel(
         }
     }
 
-    fun onToastShown() {
+    private fun onToastShown() {
         _uiState.update {
             it.copy(
                 toastText = null,
             )
         }
     }
-
-    fun onPermissionsRequested() {
-        _uiState.update {
-            it.copy(
-                checkPermissions = false,
-            )
-        }
-    }
 }
-
-data class MainViewState(
-    val sms: List<String> = emptyList(),
-    val toastText: String? = null,
-    val showForegroundService: Boolean = false,
-    val checkPermissions: Boolean = true,
-)

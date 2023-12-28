@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.db.AppDatabase
 import com.kamikadze328.smssender.data.db.mapper.SmsDbMapper
+import com.kamikadze328.smssender.data.db.model.SmsDb
 import com.kamikadze328.smssender.model.Sms
 
 class SmsRepository(
@@ -56,5 +57,13 @@ class SmsRepository(
         notSent.forEach {
             sendToTelegram(smsDbMapper.toDomain(it))
         }
+    }
+
+    suspend fun getAll(): List<Sms> {
+        return database.smsDao().getAll().toDomain()
+    }
+
+    private fun List<SmsDb>.toDomain(): List<Sms> {
+        return mapNotNull { smsDbMapper.toDomain(it) }
     }
 }

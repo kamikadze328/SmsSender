@@ -6,5 +6,6 @@
     <string name="sms_sender_unknown">Unknown</string>
     <string name="sms_sender">Sender:</string>
     <string name="sms_receiver">Receiver:</string>
+    <string name="sms_to">To:</string>
     <string name="sms_sent_when">When:</string>
 </resources>

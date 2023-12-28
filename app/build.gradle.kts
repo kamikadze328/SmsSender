@@ -47,7 +47,9 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        compose = true
     }
+    composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
 }
 
 room {
@@ -63,8 +65,16 @@ dependencies {
     implementation(libs.viewmodel)
     implementation(libs.lifecycle.service)
     implementation(libs.lifecycle.viewmodel)
-//    implementation(libs.lifecycle.viewmodel.compose)
-//    implementation(libs.lifecycle.runtime.compose)
+
+    // Compose
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.activity.compose)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material)
+    implementation(libs.compose.tooling)
+    debugImplementation(libs.compose.preview)
+    implementation(libs.compose.livedata)
 
     // Kotlin
     implementation(libs.coroutines.android)

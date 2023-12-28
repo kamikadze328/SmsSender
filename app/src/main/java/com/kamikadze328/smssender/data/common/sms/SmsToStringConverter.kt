@@ -1,6 +1,7 @@
 package com.kamikadze328.smssender.data.common.sms
 
 import android.content.Context
+import android.telephony.PhoneNumberUtils
 import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.model.Sms
 
@@ -32,29 +33,45 @@ class SmsToStringConverter(
         }
     }
 
-    private fun makeSenderString(sms: Sms): String {
+    fun makeSenderString(sms: Sms, isShort: Boolean = false): String {
         val name = sms.sender.name
-        val phone = sms.sender.phone
+        val phone = formatPhone(sms.sender.phone)
         return when {
-            !name.isNullOrBlank() && !phone.isNullOrBlank() -> "$name (${phone})"
+            !name.isNullOrBlank() && !phone.isNullOrBlank() && !isShort -> "$name (${phone})"
+            !name.isNullOrBlank() && !phone.isNullOrBlank() -> name
+
             !phone.isNullOrBlank() -> phone
             !name.isNullOrBlank() -> name
             else -> applicationContext.getString(R.string.sms_sender_unknown)
         }
     }
 
-    private fun makeReceiverString(sms: Sms): String {
+    fun makeReceiverString(sms: Sms, isShort: Boolean = false): String {
         val name = sms.receiver.displayName
-        val phone = sms.receiver.phone
+        val phone = formatPhone(sms.receiver.phone)
         return when {
-            !name.isNullOrBlank() && !phone.isNullOrBlank() -> "$name (${phone})"
+            !name.isNullOrBlank() && !phone.isNullOrBlank() && !isShort -> "$name (${phone})"
+            !name.isNullOrBlank() && !phone.isNullOrBlank() -> name
             !phone.isNullOrBlank() -> phone
             !name.isNullOrBlank() -> name
             else -> applicationContext.getString(R.string.sms_receiver_unknown)
         }
     }
 
-    private fun makeDateTimeString(sms: Sms): String {
+    fun makeDateTimeString(sms: Sms): String {
         return sms.info.dateTime.toString()
+    }
+
+    private fun formatPhone(phone: String?): String? {
+        if (phone.isNullOrBlank()) {
+            return null
+        }
+
+        return if (PhoneNumberUtils.isGlobalPhoneNumber(phone)) {
+            PhoneNumberUtils.formatNumber(phone, "RU")
+        } else {
+            phone
+        }
+
     }
 }
