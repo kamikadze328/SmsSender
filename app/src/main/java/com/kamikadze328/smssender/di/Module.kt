@@ -4,6 +4,7 @@ import com.kamikadze328.smssender.MainViewModel
 import com.kamikadze328.smssender.data.TelegramRepository
 import com.kamikadze328.smssender.data.common.ContactsManager
 import com.kamikadze328.smssender.data.common.PermissionManager
+import com.kamikadze328.smssender.data.common.SettingsRepository
 import com.kamikadze328.smssender.data.common.sms.SmsRepository
 import com.kamikadze328.smssender.data.common.sms.SmsToStringConverter
 import com.kamikadze328.smssender.data.db.AppDatabase
@@ -22,6 +23,10 @@ val appModule = module {
     single {
         AppDatabase.buildDatabase(androidContext())
     }
+    single {
+        KtorHttpClient.createHttpClient()
+    }
+    singleOf(::SettingsRepository)
     singleOf(::GetSmsInfoUseCase)
     singleOf(::GetSmsInfoUseCase)
     singleOf(::GetSmsReceiverUseCase)

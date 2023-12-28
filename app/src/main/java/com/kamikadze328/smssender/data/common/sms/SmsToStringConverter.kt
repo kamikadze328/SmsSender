@@ -28,7 +28,6 @@ class SmsToStringConverter(
             appendLine("$CALENDAR_EMOJI <b>$dateTimeTitle</b> $dateTime")
             appendLine("___________________________________")
             appendLine()
-            appendLine()
             append(message)
         }
     }
