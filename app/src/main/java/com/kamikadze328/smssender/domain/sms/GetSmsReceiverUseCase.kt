@@ -41,7 +41,7 @@ class GetSmsReceiverUseCase(
     fun invoke(context: Context, intent: Intent): SmsReceiver {
         if (!hasPermissionsForGettingPhoneNumber(context)) return SmsReceiver.EMPTY
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             makeSmsReceiverInfo(context, intent)
         } else {
             makeSmsReceiverInfoOld(context, intent)
@@ -90,35 +90,53 @@ class GetSmsReceiverUseCase(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     private fun makeSmsReceiverInfo(context: Context, intent: Intent): SmsReceiver? {
         val subscriptionManager = getSubscriptionManager(context) ?: return null
         return try {
             val subscriptionId = getSubscriptionId(intent)
             val subInfo = getSubscriptionInfo(subscriptionManager, subscriptionId)
 
-            val phone1 = subscriptionManager.getPhoneNumber(subscriptionId)
+            val phone1 = subscriptionManager.getPhoneNumberOrNull(subscriptionId)
             val phone2 = subInfo?.displayName
 
             @Suppress("DEPRECATION")
             val phone3 = subInfo?.number
 
             val phone = when {
-                phone1.isNotBlank() -> phone1
+                !phone1.isNullOrBlank() -> phone1
                 !phone2.isNullOrBlank() -> phone2.toString()
                 !phone3.isNullOrBlank() -> phone3
                 else -> null
             }
 
             val name = subInfo?.displayName?.toString()
+            val cardId = subInfo?.getCardIdOrNull()
             SmsReceiver(
-                phone = phone,
+                phone = phone?.takeIf { it.isNotBlank() },
                 simSlot = subInfo?.simSlotIndex ?: getSimSlot(intent),
-                cardId = subInfo?.cardId,
+                cardId = cardId,
                 displayName = name,
                 contact = getContactName(context, phone, name),
             )
         } catch (e: SecurityException) {
+            null
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun SubscriptionManager.getPhoneNumberOrNull(subscriptionId: Int): String? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getPhoneNumber(subscriptionId)
+        } else {
+            null
+        }
+    }
+
+    private fun SubscriptionInfo.getCardIdOrNull(): Int? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            cardId
+        } else {
             null
         }
     }
@@ -145,7 +163,7 @@ class GetSmsReceiverUseCase(
             val phone = telephonyManager.line1Number
             val contactName = contactsManager.getContactName(context, phone)
             SmsReceiver.EMPTY.copy(
-                phone = phone,
+                phone = phone.takeIf { it.isNotBlank() },
                 simSlot = getSimSlot(intent),
                 displayName = contactName,
             )

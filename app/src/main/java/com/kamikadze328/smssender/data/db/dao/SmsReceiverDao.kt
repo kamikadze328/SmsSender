@@ -16,12 +16,16 @@ interface SmsReceiverDao {
     @Query("SELECT * FROM SmsReceiverDb WHERE phone = :phone")
     suspend fun getByPhone(phone: String): SmsReceiverDb?
 
+    @Query("SELECT * FROM SmsReceiverDb WHERE simSlot = :simSlot")
+    suspend fun getBySimSlot(simSlot: Int): SmsReceiverDb?
+
     @Update
     suspend fun update(receiverDb: SmsReceiverDb)
 
     @Transaction
     suspend fun updateOrInsert(receiver: SmsReceiverDb): Long {
         val cachedReceiver = getByPhone(receiver.phone)
+            ?: receiver.simSlot?.let { getBySimSlot(it) }
         return if (cachedReceiver == null) {
             insert(receiver)
         } else {

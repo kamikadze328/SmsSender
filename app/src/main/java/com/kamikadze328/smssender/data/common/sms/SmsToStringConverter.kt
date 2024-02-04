@@ -49,8 +49,9 @@ class SmsToStringConverter(
     fun makeReceiverString(sms: Sms, isShort: Boolean = false): String {
         val name = sms.receiver.displayName
         val phone = formatPhone(sms.receiver.phone)
+        val isPhoneEqualsName = name == phone
         return when {
-            !name.isNullOrBlank() && !phone.isNullOrBlank() && !isShort -> "$name (${phone})"
+            !name.isNullOrBlank() && !phone.isNullOrBlank() && !isShort && !isPhoneEqualsName -> "$name (${phone})"
             !name.isNullOrBlank() && !phone.isNullOrBlank() -> name
             !phone.isNullOrBlank() -> phone
             !name.isNullOrBlank() -> name
