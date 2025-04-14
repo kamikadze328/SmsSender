@@ -1,8 +1,8 @@
 # SmsSender
 
-Application handle all sms and send it to Telegram Messanger (like WhatsApp Messenger) using [Telegram Bot Api](https://core.telegram.org/bots/api).   
+Application handle all sms and send it to Telegram Messanger.   
 
-The application uses Broadcast Receiver to handle all incoming SMS and sends it to Telegram. It can be helpful when you have multiple SIM cards and want to get all SMS in one chat Telegram without using many different devices.
+The application uses Broadcast Receiver to handle all incoming SMS and sends it to Telegram (like WhatsApp Messenger) using [Telegram Bot Api](https://core.telegram.org/bots/api). It can be helpful when you have multiple SIM cards and want to get all SMS in one chat Telegram without using many different devices.
 
 #### Technologies
 - BroadcastReceiver
@@ -13,7 +13,7 @@ The application uses Broadcast Receiver to handle all incoming SMS and sends it 
 
 #### Screenshots
 <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img.webp" width="350"> <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_1.webp" width="350">
-<img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_1.webp" width="350">
+<img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_2.webp" width="350"> <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_3.webp" width="350">
 
 
 [sms_sender.mp4](https://github.com/user-attachments/assets/652a8653-10ef-4812-a45f-b4ee33f63539)
