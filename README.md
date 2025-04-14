@@ -1,6 +1,6 @@
 # SmsSender
 
-Application handle all sms and send it to Telegram.   
+Application handle all sms and send it to Telegram Messanger (like WhatsApp Messenger) using [Telegram Bot Api](https://core.telegram.org/bots/api).   
 
 The application uses Broadcast Receiver to handle all incoming SMS and sends it to Telegram. It can be helpful when you have multiple SIM cards and want to get all SMS in one chat Telegram without using many different devices.
 
