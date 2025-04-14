@@ -7,6 +7,7 @@ The application uses Broadcast Receiver to handle all incoming SMS and sends it 
 #### Technologies
 - Broadcast Receiver
 - Jetpack Compose (+ Animations)
+- Coroutines
 - Ktor
 - Koin
 - Room
