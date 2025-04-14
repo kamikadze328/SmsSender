@@ -122,7 +122,7 @@ fun MessageHeader(
             val checkIconColor = if (sms.isSent) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.tertiary
+                MaterialTheme.colorScheme.error
             }
             Image(
                 modifier = Modifier.padding(start = 8.dp),

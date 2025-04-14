@@ -63,7 +63,7 @@ class SmsRepository(
         return database.smsDao().getAll().toDomain()
     }
 
-    suspend fun getAllLast(count: Int = 20): List<Sms> {
+    suspend fun getAllLast(count: Int = 100): List<Sms> {
         return database.smsDao().getAllLast(count).toDomain()
     }
 
