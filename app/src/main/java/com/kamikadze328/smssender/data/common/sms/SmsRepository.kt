@@ -63,6 +63,10 @@ class SmsRepository(
         return database.smsDao().getAll().toDomain()
     }
 
+    suspend fun getAllLast(count: Int = 20): List<Sms> {
+        return database.smsDao().getAllLast(count).toDomain()
+    }
+
     private fun List<SmsDb>.toDomain(): List<Sms> {
         return mapNotNull { smsDbMapper.toDomain(it) }
     }

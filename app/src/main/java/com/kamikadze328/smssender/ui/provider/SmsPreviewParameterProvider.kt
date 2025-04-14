@@ -3,6 +3,7 @@ package com.kamikadze328.smssender.ui.provider
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.kamikadze328.smssender.ui.SmsList
 import com.kamikadze328.smssender.ui.SmsUi
+import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
 
 class SmsPreviewParameterProvider : PreviewParameterProvider<SmsUi> {
@@ -27,7 +28,7 @@ class SmsPreviewParameterProvider : PreviewParameterProvider<SmsUi> {
 class SmsListPreviewParameterProvider : PreviewParameterProvider<SmsList> {
     override val values = sequenceOf(
         SmsList(
-            list = listOf(
+            list = persistentListOf(
                 SmsUi(
                     receiverName = "Receiver 1",
                     senderName = "Sender 1",

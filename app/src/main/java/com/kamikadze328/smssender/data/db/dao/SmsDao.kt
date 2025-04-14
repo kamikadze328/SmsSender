@@ -24,4 +24,8 @@ interface SmsDao {
     @Transaction
     @Query("SELECT * FROM SmsContentDb ORDER BY dateTime DESC")
     suspend fun getAll(): List<SmsDb>
+
+    @Transaction
+    @Query("SELECT * FROM SmsContentDb ORDER BY dateTime DESC LIMIT :count")
+    suspend fun getAllLast(count: Int): List<SmsDb>
 }

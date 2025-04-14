@@ -1,8 +1,10 @@
 package com.kamikadze328.smssender.ui
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Immutable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
-@Stable
+@Immutable
 data class SmsUi(
     val receiverName: String,
     val senderName: String,
@@ -11,7 +13,7 @@ data class SmsUi(
     val dateTime: String,
 )
 
-@Stable
+@Immutable
 data class SmsList(
-    val list: List<SmsUi> = emptyList(),
+    val list: ImmutableList<SmsUi> = persistentListOf(),
 )

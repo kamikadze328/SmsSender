@@ -1,22 +1,18 @@
 [versions]
-activity = "1.8.2"
-androidGradlePlugin = "8.2.0"
-androidKtx = "1.12.0"
-appcompat = "1.6.1"
-compose = "2023.10.01"
-# depends on kotlin version
-composeKotlinCompiler = "1.5.7"
-coroutines = "1.7.3"
+activity = "1.10.1"
+androidGradlePlugin = "8.9.1"
+androidKtx = "1.16.0"
+appcompat = "1.7.0"
+compose = "2025.04.00"
+coroutines = "1.10.1"
 koin = "3.5.3"
-kotlin = "1.9.21"
-# depends on kotlin version
-ksp = "1.9.21-1.0.15"
-ktor = "2.3.3"
-lifecycle = "2.6.2"
-material = "1.11.0"
-room = "2.6.1"
-# depends on kotlin version
-kotlinSerialization = "1.6.2"
+kotlin = "2.1.20"
+ksp = "2.1.20-1.0.32"
+ktor = "3.1.2"
+lifecycle = "2.8.7"
+room = "2.7.0"
+kotlinSerialization = "1.8.1"
+kotlinxCollectionsImmutable = "0.3.8"
 
 [libraries]
 # Android dependencies
@@ -29,12 +25,11 @@ compose-material = { group = "androidx.compose.material3", name = "material3" }
 compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
 lifecycle-service = { group = "androidx.lifecycle", name = "lifecycle-service", version.ref = "lifecycle" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+material3 = { group = "androidx.compose.material3", name = "material3" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
@@ -42,6 +37,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # Kotlin dependencies
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable-jvm", version.ref = "kotlinxCollectionsImmutable" }
 
 # 3-rd party dependencies
 ktor-bom = { group = "io.ktor", name = "ktor-bom", version.ref = "ktor" }
@@ -60,3 +56,5 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room = { id = "androidx.room", version.ref = "room" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

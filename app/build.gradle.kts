@@ -1,32 +1,30 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
-    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.kamikadze328.smssender"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        val localProperties: Properties = gradleLocalProperties(rootDir)
-        val tgChatId: String = localProperties.getProperty("tg.chat.id", "")
-        val tgBotId: String = localProperties.getProperty("tg.bot.id", "")
+        val localProperties = gradleLocalProperties(rootDir, providers)
+        val tgChatId = localProperties.getProperty("tg.chat.id").orEmpty()
+        val tgBotId = localProperties.getProperty("tg.bot.id").orEmpty()
         buildConfigField("String", "TG_CHAT_ID", tgChatId)
         buildConfigField("String", "TG_BOT_ID", tgBotId)
 
         applicationId = "com.kamikadze328.smssender"
         minSdk = 21
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -39,30 +37,26 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
-        compose = true
     }
-    composeOptions.kotlinCompilerExtensionVersion = libs.versions.composeKotlinCompiler.get()
-}
-
-room {
-    schemaDirectory("$projectDir/schemas")
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
     // Android
     implementation(libs.androidx.core)
     implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.material3)
     implementation(libs.activity)
-    implementation(libs.viewmodel)
     implementation(libs.lifecycle.service)
     implementation(libs.lifecycle.viewmodel)
 
@@ -79,11 +73,11 @@ dependencies {
     // Kotlin
     implementation(libs.coroutines.android)
     implementation(libs.kotlin.serialization)
+    implementation(libs.collections.immutable)
 
     // Room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
 
     // 3rd party

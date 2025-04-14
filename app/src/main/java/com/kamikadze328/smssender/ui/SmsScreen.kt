@@ -1,15 +1,9 @@
 package com.kamikadze328.smssender.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -33,11 +27,9 @@ import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.ui.provider.SmsListPreviewParameterProvider
 import com.kamikadze328.smssender.ui.provider.SmsPreviewParameterProvider
 
-@Preview
 @Composable
 fun SmsScreen(
     modifier: Modifier = Modifier,
-    @PreviewParameter(SmsListPreviewParameterProvider::class, limit = 1)
     smsList: SmsList,
 ) {
     LazyColumn(
@@ -53,6 +45,17 @@ fun SmsScreen(
     )
 }
 
+@Preview
+@Composable
+fun SmsScreenPreview(
+    @PreviewParameter(provider = SmsListPreviewParameterProvider::class, limit = 1)
+    smsList: SmsList,
+) {
+    SmsScreen(
+        smsList = smsList,
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MessageCard(
@@ -62,6 +65,7 @@ fun MessageCard(
     Row(
         modifier = Modifier
             .padding(all = 8.dp)
+            .background(MaterialTheme.colorScheme.background)
             .fillMaxWidth()
     ) {
         var isExpanded by remember { mutableStateOf(false) }
@@ -95,7 +99,7 @@ fun MessageHeader(
     isExpanded: Boolean = true,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(4.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -138,9 +142,14 @@ fun MessageBody(
     isExpanded: Boolean = true,
 ) {
     val surfaceColor = if (isExpanded) {
-        MaterialTheme.colorScheme.primary
+        MaterialTheme.colorScheme.tertiary
     } else {
         MaterialTheme.colorScheme.surface
+    }
+    val textColor =  if (isExpanded) {
+        MaterialTheme.colorScheme.onTertiary
+    } else {
+        MaterialTheme.colorScheme.onSurface
     }
     Surface(
         modifier = Modifier
@@ -150,14 +159,17 @@ fun MessageBody(
         shadowElevation = 1.dp,
         color = surfaceColor,
     ) {
-        val text = buildString {
-            appendLine(sms.text)
-            appendLine()
-            append(sms.dateTime)
+        val text = remember {
+            buildString {
+                appendLine(sms.text)
+                appendLine()
+                append(sms.dateTime)
+            }
         }
         Text(
             text = text,
             modifier = Modifier.padding(all = 8.dp),
+            color = textColor,
             maxLines = if (isExpanded) Int.MAX_VALUE else 1,
             style = MaterialTheme.typography.bodyMedium,
         )

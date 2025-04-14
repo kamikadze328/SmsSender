@@ -19,6 +19,7 @@ import com.kamikadze328.smssender.data.common.sms.SmsToStringConverter
 import com.kamikadze328.smssender.model.Sms
 import com.kamikadze328.smssender.ui.SmsList
 import com.kamikadze328.smssender.ui.SmsUi
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -48,8 +49,8 @@ class MainViewModel(
 
     private fun updateSmsList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val sms = smsRepository.getAll()
-            val smsUi = sms.map { it.toUi() }
+            val sms = smsRepository.getAllLast()
+            val smsUi = sms.map { it.toUi() }.toImmutableList()
             _uiState.update {
                 it.copy(
                     sms = SmsList(smsUi),
