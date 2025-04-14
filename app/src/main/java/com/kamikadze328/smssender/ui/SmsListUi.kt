@@ -125,7 +125,7 @@ private fun MessageHeaderUi(
                     .clip(RoundedCornerShape(12.dp))
                     .background(iconBackgroundColor)
                     .padding(4.dp),
-                imageVector = if(sms.isSent) Icons.Default.Check else Icons.Default.Clear,
+                imageVector = if (sms.isSent) Icons.Default.Check else Icons.Default.Clear,
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(iconColor),
             )
