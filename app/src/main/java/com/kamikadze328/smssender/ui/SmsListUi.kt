@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -108,22 +109,23 @@ private fun MessageHeaderUi(
             )
 
             val iconBackgroundColor = if (sms.isSent) {
-                MaterialTheme.colorScheme.primaryContainer
+                MaterialTheme.colorScheme.background
             } else {
                 MaterialTheme.colorScheme.errorContainer
             }
             val iconColor = if (sms.isSent) {
-                MaterialTheme.colorScheme.onPrimaryContainer
+                MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.onErrorContainer
             }
+
             Image(
                 modifier = Modifier
                     .size(24.dp)
                     .clip(RoundedCornerShape(12.dp))
                     .background(iconBackgroundColor)
                     .padding(4.dp),
-                imageVector = Icons.Default.Check,
+                imageVector = if(sms.isSent) Icons.Default.Check else Icons.Default.Clear,
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(iconColor),
             )
