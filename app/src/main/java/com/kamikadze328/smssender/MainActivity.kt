@@ -8,7 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.kamikadze328.smssender.ui.MainScreen
+import com.kamikadze328.smssender.ui.MainScreenUi
 import com.kamikadze328.smssender.ui.theme.MyTheme
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MainScreen(viewModel)
+                MainScreenUi(viewModel)
             }
         }
         lifecycleScope.launch {

@@ -1,13 +1,16 @@
 package com.kamikadze328.smssender.ui
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -17,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,40 +30,28 @@ import androidx.compose.ui.unit.dp
 import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.ui.provider.SmsListPreviewParameterProvider
 import com.kamikadze328.smssender.ui.provider.SmsPreviewParameterProvider
+import com.kamikadze328.smssender.ui.theme.MyTheme
 
 @Composable
-fun SmsScreen(
+internal fun SmsListUi(
     modifier: Modifier = Modifier,
     smsList: SmsList,
 ) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-
-        content = {
-            items(smsList.list) {
-                MessageCard(sms = it)
-            }
+    ) {
+        items(smsList.list) {
+            MessageCardUi(sms = it)
         }
-    )
+    }
 }
 
-@Preview
 @Composable
-fun SmsScreenPreview(
-    @PreviewParameter(provider = SmsListPreviewParameterProvider::class, limit = 1)
-    smsList: SmsList,
-) {
-    SmsScreen(
-        smsList = smsList,
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MessageCard(
-    @PreviewParameter(SmsPreviewParameterProvider::class)
+private fun MessageCardUi(
     sms: SmsUi
 ) {
     Row(
@@ -75,15 +67,11 @@ fun MessageCard(
                 .clickable { isExpanded = !isExpanded }
                 .fillMaxWidth()
         ) {
-            MessageHeader(
+            MessageHeaderUi(
                 sms = sms,
                 isExpanded = isExpanded,
             )
-
-            Spacer(
-                modifier = Modifier.height(4.dp)
-            )
-            MessageBody(
+            MessageBodyUi(
                 sms = sms,
                 isExpanded = isExpanded,
             )
@@ -91,15 +79,15 @@ fun MessageCard(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MessageHeader(
-    @PreviewParameter(SmsPreviewParameterProvider::class)
+private fun MessageHeaderUi(
     sms: SmsUi,
     isExpanded: Boolean = true,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().padding(4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -114,50 +102,64 @@ fun MessageHeader(
                 modifier = Modifier.weight(1f),
                 text = text,
                 color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.titleSmall,
+                style = MaterialTheme.typography.titleMedium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
-            val checkIconColor = if (sms.isSent) {
-                MaterialTheme.colorScheme.primary
+            val iconBackgroundColor = if (sms.isSent) {
+                MaterialTheme.colorScheme.primaryContainer
             } else {
-                MaterialTheme.colorScheme.error
+                MaterialTheme.colorScheme.errorContainer
+            }
+            val iconColor = if (sms.isSent) {
+                MaterialTheme.colorScheme.onPrimaryContainer
+            } else {
+                MaterialTheme.colorScheme.onErrorContainer
             }
             Image(
-                modifier = Modifier.padding(start = 8.dp),
-                imageVector = Icons.Outlined.Check,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(iconBackgroundColor)
+                    .padding(4.dp),
+                imageVector = Icons.Default.Check,
                 contentDescription = "",
-                colorFilter = ColorFilter.tint(checkIconColor),
+                colorFilter = ColorFilter.tint(iconColor),
             )
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MessageBody(
-    @PreviewParameter(SmsPreviewParameterProvider::class)
+private fun MessageBodyUi(
     sms: SmsUi,
     isExpanded: Boolean = true,
 ) {
-    val surfaceColor = if (isExpanded) {
-        MaterialTheme.colorScheme.tertiary
-    } else {
-        MaterialTheme.colorScheme.surface
-    }
-    val textColor =  if (isExpanded) {
-        MaterialTheme.colorScheme.onTertiary
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
+    val animatedBackGroundColor by animateColorAsState(
+        if (isExpanded) {
+            MaterialTheme.colorScheme.primaryContainer
+        } else {
+            MaterialTheme.colorScheme.background
+        },
+        label = "background color",
+    )
+    val animatedTextColor by animateColorAsState(
+        if (isExpanded) {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.onBackground
+        },
+        label = "background color",
+    )
     Surface(
         modifier = Modifier
             .padding(1.dp)
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.medium,
-        shadowElevation = 1.dp,
-        color = surfaceColor,
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .animateContentSize(),
+        shape = MaterialTheme.shapes.small,
+        color = animatedBackGroundColor,
     ) {
         val text = remember {
             buildString {
@@ -169,9 +171,36 @@ fun MessageBody(
         Text(
             text = text,
             modifier = Modifier.padding(all = 8.dp),
-            color = textColor,
+            color = animatedTextColor,
             maxLines = if (isExpanded) Int.MAX_VALUE else 1,
             style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun SmsListPreviewUi(
+    @PreviewParameter(provider = SmsListPreviewParameterProvider::class, limit = 1)
+    smsList: SmsList,
+) {
+    MyTheme {
+        SmsListUi(
+            smsList = smsList,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun MessageBodyExpandedPreviewUi(
+    @PreviewParameter(provider = SmsPreviewParameterProvider::class)
+    sms: SmsUi,
+) {
+    MyTheme {
+        MessageBodyUi(
+            sms = sms,
+            isExpanded = true,
         )
     }
 }
