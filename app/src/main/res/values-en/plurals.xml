@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="sms_not_sent">
+        <item quantity="one">%d SMS not sent yet</item>
+        <item quantity="other">%d SMS not sent yet</item>
+    </plurals>
+</resources>

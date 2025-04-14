@@ -6,4 +6,5 @@ data class MainViewState(
     val sms: SmsList = SmsList(),
     val toastText: String? = null,
     val showForegroundService: Boolean = false,
+    val isLoading: Boolean = false,
 )

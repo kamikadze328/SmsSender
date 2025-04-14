@@ -9,5 +9,6 @@
     <string name="sms_receiver">Получатель:</string>
     <string name="sms_to">K:</string>
     <string name="sms_sent_when">Когда:</string>
+    <string name="all_sms_sent">Все сообщения отправлены</string>
 
 </resources>

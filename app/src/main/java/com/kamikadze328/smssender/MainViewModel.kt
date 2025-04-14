@@ -4,10 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.CATEGORY_DEFAULT
-import android.content.Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
+import android.content.Intent.*
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
@@ -44,17 +41,24 @@ class MainViewModel(
 
     private fun onInit(event: MainUiEvent.OnInit) {
         checkAndRequestPermissions(event.activity)
-        updateSmsList()
+        sendAndUpdateSmsList()
     }
 
-    private fun updateSmsList() {
+    private fun sendAndUpdateSmsList() {
+        _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch(Dispatchers.IO) {
-            val sms = smsRepository.getAllLast()
-            val smsUi = sms.map { it.toUi() }.toImmutableList()
-            _uiState.update {
-                it.copy(
-                    sms = SmsList(smsUi),
-                )
+            runCatching {
+                smsRepository.sendAllNotSent()
+                val sms = smsRepository.getAllLast()
+                val smsUi = sms.map { it.toUi() }.toImmutableList()
+                _uiState.update {
+                    it.copy(
+                        sms = SmsList(smsUi),
+                        isLoading = false,
+                    )
+                }
+            }.onFailure {
+                _uiState.update { it.copy(isLoading = false) }
             }
         }
     }
@@ -84,7 +88,7 @@ class MainViewModel(
     }
 
     private fun onRefreshClicked() {
-        updateSmsList()
+        sendAndUpdateSmsList()
     }
 
     private fun onRequestPermissionsResult(

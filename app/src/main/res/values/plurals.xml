@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="sms_not_sent">
+        <item quantity="one">%d сообщение не отправлено</item>
+        <item quantity="few">%d сообщения не отправлено</item>
+        <item quantity="other">%d сообщений не отправлено</item>
+    </plurals>
+</resources>

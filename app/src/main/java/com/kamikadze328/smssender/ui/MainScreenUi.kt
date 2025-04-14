@@ -1,7 +1,5 @@
 package com.kamikadze328.smssender.ui
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -11,9 +9,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.kamikadze328.smssender.MainUiEvent
 import com.kamikadze328.smssender.MainViewModel
 import com.kamikadze328.smssender.MainViewState
@@ -34,41 +32,56 @@ fun MainScreenUi(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainScreenUi(
     uiState: MainViewState,
     onEvent: (MainUiEvent) -> Unit,
 ) {
     Scaffold(
-        topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(stringResource(id = R.string.app_name))
-                }
-            )
-        },
+        topBar = { MyAppBar(uiState = uiState) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onEvent(MainUiEvent.OnRefreshClicked) }) {
-                Icon(Icons.Filled.Refresh, "")
+                Icon(Icons.Default.Refresh, "")
             }
         },
     ) { innerPadding ->
-        Column(
+        SmsListUi(
             modifier = Modifier.padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            SmsListUi(
-                modifier = Modifier.padding(8.dp),
-                smsList = uiState.sms,
-            )
-        }
+            smsList = uiState.sms,
+            isLoading = uiState.isLoading,
+        )
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MyAppBar(
+    uiState: MainViewState
+) {
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        title = {
+            val notSentSmsCount = uiState.sms.list.count { !it.isSent }
+            val text = if (notSentSmsCount == 0) {
+                stringResource(id = R.string.all_sms_sent)
+            } else {
+                pluralStringResource(
+                    id = R.plurals.sms_not_sent,
+                    notSentSmsCount,
+                    notSentSmsCount
+                )
+            }
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+    )
+}
+
 
 @Preview
 @Composable
@@ -76,6 +89,7 @@ private fun MainScreenPreviewUi() {
     MyTheme {
         MainScreenUi(
             uiState = MainViewState(
+                isLoading = true,
                 sms = SmsList(
                     persistentListOf(
                         SmsUi(

@@ -52,7 +52,7 @@ class SmsRepository(
         }
     }
 
-    private suspend fun sendAllNotSent() {
+    suspend fun sendAllNotSent() {
         val notSent = database.smsDao().getAllNotSent()
         notSent.forEach {
             sendToTelegram(smsDbMapper.toDomain(it))

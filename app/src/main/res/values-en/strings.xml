@@ -8,4 +8,5 @@
     <string name="sms_receiver">Receiver:</string>
     <string name="sms_to">To:</string>
     <string name="sms_sent_when">When:</string>
+    <string name="all_sms_sent">All SMS sent</string>
 </resources>

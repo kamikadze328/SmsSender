@@ -1,5 +1,6 @@
 package com.kamikadze328.smssender.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -37,16 +39,28 @@ import com.kamikadze328.smssender.ui.theme.MyTheme
 internal fun SmsListUi(
     modifier: Modifier = Modifier,
     smsList: SmsList,
+    isLoading: Boolean,
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-    ) {
-        items(smsList.list) {
-            MessageCardUi(sms = it)
+    Column(modifier = modifier) {
+        AnimatedVisibility(isLoading) {
+            LinearProgressIndicator(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+            )
+        }
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+        ) {
+            items(smsList.list) {
+                MessageCardUi(sms = it)
+            }
         }
     }
 }
@@ -189,6 +203,7 @@ private fun SmsListPreviewUi(
     MyTheme {
         SmsListUi(
             smsList = smsList,
+            isLoading = true
         )
     }
 }
