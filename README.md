@@ -12,6 +12,9 @@ The application uses Broadcast Receiver to handle all incoming SMS and sends it 
 - Koin
 - Room
 
+#### APIs
+- [Telegram Bot Api](https://core.telegram.org/bots/api)
+
 #### Screenshots
 <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img.webp" width="350"> <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_1.webp" width="350">
 <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_2.webp" width="350"> <img alt="" src="https://github.com/kamikadze328/SmsSender/blob/main/Screenshots/img_3.webp" width="350">
