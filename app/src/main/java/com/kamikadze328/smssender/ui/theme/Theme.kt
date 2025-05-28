@@ -27,7 +27,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun MyTheme(
+fun SmsSenderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit

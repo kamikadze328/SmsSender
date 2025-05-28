@@ -24,22 +24,19 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
-class MainViewModel(
+class SmsListViewModel(
     private val permissionManager: PermissionManager,
     private val smsToStringConverter: SmsToStringConverter,
     private val smsRepository: SmsRepository,
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(
-        MainViewState()
-    )
-    val uiState: StateFlow<MainViewState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(SmsListUiState())
+    val uiState: StateFlow<SmsListUiState> = _uiState.asStateFlow()
 
     private var permissionsRequestCode: List<String>? = null
     private var permissionRequestCount: Int = 0
 
-    private fun onInit(event: MainUiEvent.OnInit) {
+    private fun onInit(event: SmsListUiEvent.OnInit) {
         checkAndRequestPermissions(event.activity)
         sendAndUpdateSmsList()
     }
@@ -73,13 +70,12 @@ class MainViewModel(
         )
     }
 
-    fun onEvent(event: MainUiEvent) {
+    fun onEvent(event: SmsListUiEvent) {
         when (event) {
-            is MainUiEvent.OnToastShown -> onToastShown()
-            is MainUiEvent.ForegroundServiceStarted -> foregroundServiceStarted()
-            is MainUiEvent.OnInit -> onInit(event)
-            is MainUiEvent.OnRefreshClicked -> onRefreshClicked()
-            is MainUiEvent.OnPermissionsResult -> onRequestPermissionsResult(
+            is SmsListUiEvent.OnToastShown -> onToastShown()
+            is SmsListUiEvent.OnInit -> onInit(event)
+            is SmsListUiEvent.OnRefreshClicked -> onRefreshClicked()
+            is SmsListUiEvent.OnPermissionsResult -> onRequestPermissionsResult(
                 requestCode = event.requestCode,
                 grantResults = event.grantResults.toIntArray(),
                 activity = event.activity,
@@ -99,9 +95,7 @@ class MainViewModel(
         permissionManager.onRequestPermissionsResult(
             requestCode = requestCode,
             grantResults = grantResults,
-            onSuccess = {
-                startForegroundService()
-            },
+            onSuccess = {},
             onError = {
                 showToast("You must grand all permissions to work application fine")
                 checkAndRequestPermissions(activity)
@@ -116,9 +110,6 @@ class MainViewModel(
         }
 
         permissionsRequestCode = requestPermission(activity)
-        if (permissionsRequestCode == null) {
-            startForegroundService()
-        }
     }
 
     private fun requestPermission(activity: Activity): List<String>? {
@@ -150,26 +141,10 @@ class MainViewModel(
         context.startActivity(intent)
     }
 
-    private fun startForegroundService() {
-        _uiState.update {
-            it.copy(
-                showForegroundService = true,
-            )
-        }
-    }
-
     private fun showToast(text: String) {
         _uiState.update {
             it.copy(
                 toastText = text,
-            )
-        }
-    }
-
-    private fun foregroundServiceStarted() {
-        _uiState.update {
-            it.copy(
-                showForegroundService = false,
             )
         }
     }

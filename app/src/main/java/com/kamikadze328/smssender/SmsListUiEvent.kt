@@ -2,17 +2,17 @@ package com.kamikadze328.smssender
 
 import android.app.Activity
 
-sealed interface MainUiEvent {
+sealed interface SmsListUiEvent {
     data class OnPermissionsResult(
         val requestCode: Int,
         val grantResults: List<Int>,
         val activity: Activity,
-    ) : MainUiEvent
-    data object OnToastShown : MainUiEvent
-    data object ForegroundServiceStarted : MainUiEvent
+    ) : SmsListUiEvent
+
+    data object OnToastShown : SmsListUiEvent
     data class OnInit(
         val activity: Activity,
-    ) : MainUiEvent
+    ) : SmsListUiEvent
 
-    data object OnRefreshClicked : MainUiEvent
+    data object OnRefreshClicked : SmsListUiEvent
 }

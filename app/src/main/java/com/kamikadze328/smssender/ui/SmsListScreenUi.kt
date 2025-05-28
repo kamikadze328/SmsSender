@@ -12,35 +12,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kamikadze328.smssender.MainUiEvent
-import com.kamikadze328.smssender.MainViewModel
-import com.kamikadze328.smssender.MainViewState
+import com.kamikadze328.smssender.SmsListUiEvent
+import com.kamikadze328.smssender.SmsListViewModel
+import com.kamikadze328.smssender.SmsListUiState
 import com.kamikadze328.smssender.R
-import com.kamikadze328.smssender.ui.theme.MyTheme
+import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
 
 @Composable
-fun MainScreenUi(
-    viewModel: MainViewModel
+fun SmsListScreenUi(
+    viewModel: SmsListViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    MainScreenUi(
+    SmsListScreenUi(
         uiState = uiState,
         onEvent = remember { viewModel::onEvent },
     )
 }
 
 @Composable
-private fun MainScreenUi(
-    uiState: MainViewState,
-    onEvent: (MainUiEvent) -> Unit,
+private fun SmsListScreenUi(
+    uiState: SmsListUiState,
+    onEvent: (SmsListUiEvent) -> Unit,
 ) {
     Scaffold(
         topBar = { MyAppBar(uiState = uiState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent(MainUiEvent.OnRefreshClicked) }) {
+            FloatingActionButton(onClick = { onEvent(SmsListUiEvent.OnRefreshClicked) }) {
                 Icon(Icons.Default.Refresh, "")
             }
         },
@@ -56,7 +56,7 @@ private fun MainScreenUi(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MyAppBar(
-    uiState: MainViewState
+    uiState: SmsListUiState
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -86,9 +86,9 @@ private fun MyAppBar(
 @Preview
 @Composable
 private fun MainScreenPreviewUi() {
-    MyTheme {
-        MainScreenUi(
-            uiState = MainViewState(
+    SmsSenderTheme {
+        SmsListScreenUi(
+            uiState = SmsListUiState(
                 isLoading = true,
                 sms = SmsList(
                     persistentListOf(

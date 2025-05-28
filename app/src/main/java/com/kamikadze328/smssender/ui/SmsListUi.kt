@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.ui.provider.SmsListPreviewParameterProvider
 import com.kamikadze328.smssender.ui.provider.SmsPreviewParameterProvider
-import com.kamikadze328.smssender.ui.theme.MyTheme
+import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
 
 @Composable
 internal fun SmsListUi(
@@ -200,7 +200,7 @@ private fun SmsListPreviewUi(
     @PreviewParameter(provider = SmsListPreviewParameterProvider::class, limit = 1)
     smsList: SmsList,
 ) {
-    MyTheme {
+    SmsSenderTheme {
         SmsListUi(
             smsList = smsList,
             isLoading = true
@@ -214,7 +214,7 @@ private fun MessageBodyExpandedPreviewUi(
     @PreviewParameter(provider = SmsPreviewParameterProvider::class)
     sms: SmsUi,
 ) {
-    MyTheme {
+    SmsSenderTheme {
         MessageBodyUi(
             sms = sms,
             isExpanded = true,
