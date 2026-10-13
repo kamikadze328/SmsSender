@@ -11,12 +11,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.kamikadze328.smssender.BatteryMonitorWorker
+import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.SmsListUiEvent
 import com.kamikadze328.smssender.SmsListUiState
-import com.kamikadze328.smssender.R
+import com.kamikadze328.smssender.SmsListViewModel
 import com.kamikadze328.smssender.ui.icons.RefreshFilled
 import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
 import kotlinx.collections.immutable.persistentListOf
@@ -39,8 +37,6 @@ private fun SmsListScreenUi(
     uiState: SmsListUiState,
     onEvent: (SmsListUiEvent) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Scaffold(
         topBar = { MyAppBar(uiState = uiState) },
         floatingActionButton = {
