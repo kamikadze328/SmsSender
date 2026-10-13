@@ -15,7 +15,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.kamikadze328.smssender.BatteryMonitorWorker
 import com.kamikadze328.smssender.SmsListUiEvent
-import com.kamikadze328.smssender.SmsListViewModel
 import com.kamikadze328.smssender.SmsListUiState
 import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.ui.icons.RefreshFilled
@@ -45,12 +44,7 @@ private fun SmsListScreenUi(
     Scaffold(
         topBar = { MyAppBar(uiState = uiState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                onEvent(SmsListUiEvent.OnRefreshClicked)
-
-                val request = OneTimeWorkRequestBuilder<BatteryMonitorWorker>().build()
-                WorkManager.getInstance(context).enqueue(request)
-            }) {
+            FloatingActionButton(onClick = { onEvent(SmsListUiEvent.OnRefreshClicked) }) {
                 Icon(
                     imageVector = RefreshFilled,
                     contentDescription = "",
@@ -94,7 +88,6 @@ private fun MyAppBar(
         }
     )
 }
-
 
 @Preview
 @Composable
