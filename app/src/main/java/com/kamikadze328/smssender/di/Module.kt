@@ -19,7 +19,7 @@ import com.kamikadze328.smssender.domain.sms.GetSmsSenderUseCase
 import com.kamikadze328.smssender.domain.sms.ProcessSmsReceivedUseCase
 import com.kamikadze328.smssender.BatteryMonitorWorker
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.androidx.workmanager.dsl.workerOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -33,7 +33,6 @@ val appModule = module {
     }
     singleOf(::SettingsRepository)
     singleOf(::GetSmsInfoUseCase)
-    singleOf(::GetSmsInfoUseCase)
     singleOf(::GetSmsReceiverUseCase)
     singleOf(::GetSmsSenderUseCase)
     singleOf(::ProcessSmsReceivedUseCase)
@@ -44,8 +43,6 @@ val appModule = module {
     singleOf(::TelegramRepository)
     singleOf(::SmsDbMapper)
     singleOf(::SmsToStringConverter)
-    singleOf(::ProcessBatteryStatusUseCase)
-    singleOf(::BatteryMessageRepository)
 
     singleOf(::BatteryDataRepository)
     singleOf(::BatteryMessageRepository)

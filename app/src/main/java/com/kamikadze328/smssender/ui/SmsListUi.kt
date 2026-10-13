@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,14 +28,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.kamikadze328.smssender.R
+import com.kamikadze328.smssender.ui.icons.Close
+import com.kamikadze328.smssender.ui.icons.DoneAllFilled
 import com.kamikadze328.smssender.ui.provider.SmsListPreviewParameterProvider
 import com.kamikadze328.smssender.ui.provider.SmsPreviewParameterProvider
 import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 internal fun SmsListUi(
     modifier: Modifier = Modifier,
-    smsList: SmsList,
+    smsList: ImmutableList<SmsUi>,
     isLoading: Boolean,
 ) {
     Column(modifier = modifier) {
@@ -58,7 +58,10 @@ internal fun SmsListUi(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
         ) {
-            items(smsList.list) {
+            items(
+                items = smsList,
+                key = { it.id },
+            ) {
                 MessageCardUi(sms = it)
             }
         }
@@ -108,10 +111,13 @@ private fun MessageHeaderUi(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            val text = if (isExpanded) {
-                "${sms.senderName}; ${stringResource(id = R.string.sms_to)} ${sms.receiverName}"
-            } else {
-                sms.senderName
+            val smsTo = stringResource(id = R.string.sms_to)
+            val text = remember(isExpanded, sms.senderName, sms.receiverName) {
+                if (isExpanded) {
+                    "${sms.senderName}; $smsTo ${sms.receiverName}"
+                } else {
+                    sms.senderName
+                }
             }
             Text(
                 modifier = Modifier.weight(1f),
@@ -139,7 +145,7 @@ private fun MessageHeaderUi(
                     .clip(RoundedCornerShape(12.dp))
                     .background(iconBackgroundColor)
                     .padding(4.dp),
-                imageVector = if (sms.isSent) Icons.Default.Check else Icons.Default.Clear,
+                imageVector = if (sms.isSent) DoneAllFilled else Close,
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(iconColor),
             )
@@ -158,7 +164,7 @@ private fun MessageBodyUi(
         } else {
             MaterialTheme.colorScheme.background
         },
-        label = "background color",
+        label = "message body background color",
     )
     val animatedTextColor by animateColorAsState(
         if (isExpanded) {
@@ -166,7 +172,7 @@ private fun MessageBodyUi(
         } else {
             MaterialTheme.colorScheme.onBackground
         },
-        label = "background color",
+        label = "message body text color",
     )
     Surface(
         modifier = Modifier
@@ -177,7 +183,7 @@ private fun MessageBodyUi(
         shape = MaterialTheme.shapes.small,
         color = animatedBackGroundColor,
     ) {
-        val text = remember {
+        val text = remember(sms.text, sms.dateTime) {
             buildString {
                 appendLine(sms.text)
                 appendLine()
@@ -198,7 +204,7 @@ private fun MessageBodyUi(
 @Composable
 private fun SmsListPreviewUi(
     @PreviewParameter(provider = SmsListPreviewParameterProvider::class, limit = 1)
-    smsList: SmsList,
+    smsList: ImmutableList<SmsUi>
 ) {
     SmsSenderTheme {
         SmsListUi(

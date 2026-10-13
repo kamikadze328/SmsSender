@@ -75,7 +75,6 @@ dependencies {
     implementation(libs.compose.tooling)
     debugImplementation(libs.compose.preview)
     implementation(libs.compose.livedata)
-    implementation(libs.material.icons.extended)
 
     // Kotlin
     implementation(libs.coroutines.android)

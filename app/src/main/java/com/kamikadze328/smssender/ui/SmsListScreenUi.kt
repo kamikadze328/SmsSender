@@ -4,10 +4,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +17,7 @@ import com.kamikadze328.smssender.SmsListUiState
 import com.kamikadze328.smssender.SmsListViewModel
 import com.kamikadze328.smssender.ui.icons.RefreshFilled
 import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
 
@@ -38,7 +39,7 @@ private fun SmsListScreenUi(
     onEvent: (SmsListUiEvent) -> Unit,
 ) {
     Scaffold(
-        topBar = { MyAppBar(uiState = uiState) },
+        topBar = { MyAppBar(smsList = uiState.list) },
         floatingActionButton = {
             FloatingActionButton(onClick = { onEvent(SmsListUiEvent.OnRefreshClicked) }) {
                 Icon(
@@ -50,7 +51,7 @@ private fun SmsListScreenUi(
     ) { innerPadding ->
         SmsListUi(
             modifier = Modifier.padding(innerPadding),
-            smsList = uiState.sms,
+            smsList = uiState.list,
             isLoading = uiState.isLoading,
         )
     }
@@ -59,7 +60,7 @@ private fun SmsListScreenUi(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MyAppBar(
-    uiState: SmsListUiState
+    smsList: ImmutableList<SmsUi>
 ) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -67,7 +68,9 @@ private fun MyAppBar(
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         title = {
-            val notSentSmsCount = uiState.sms.list.count { !it.isSent }
+            val notSentSmsCount by remember {
+                derivedStateOf { smsList.count { !it.isSent } }
+            }
             val text = if (notSentSmsCount == 0) {
                 stringResource(id = R.string.all_sms_sent)
             } else {
@@ -92,31 +95,32 @@ private fun MainScreenPreviewUi() {
         SmsListScreenUi(
             uiState = SmsListUiState(
                 isLoading = true,
-                sms = SmsList(
-                    persistentListOf(
-                        SmsUi(
-                            receiverName = "Receiver",
-                            senderName = "Sender",
-                            text = "Text",
-                            isSent = true,
-                            dateTime = Date().toString(),
-                        ),
-                        SmsUi(
-                            receiverName = "Receiver123",
-                            senderName = "Sende123 r",
-                            text = "T 123 12ext",
-                            isSent = false,
-                            dateTime = Date().toString(),
-                        ),
-                        SmsUi(
-                            receiverName = "Receiver",
-                            senderName = "Sender",
-                            text = "Text",
-                            isSent = true,
-                            dateTime = Date().toString(),
-                        )
+                list = persistentListOf(
+                    SmsUi(
+                        id = 1L,
+                        receiverName = "Receiver",
+                        senderName = "Sender",
+                        text = "Text",
+                        isSent = true,
+                        dateTime = Date().toString(),
+                    ),
+                    SmsUi(
+                        id = 2L,
+                        receiverName = "Receiver123",
+                        senderName = "Sende123 r",
+                        text = "T 123 12ext",
+                        isSent = false,
+                        dateTime = Date().toString(),
+                    ),
+                    SmsUi(
+                        id = 3L,
+                        receiverName = "Receiver",
+                        senderName = "Sender",
+                        text = "Text",
+                        isSent = true,
+                        dateTime = Date().toString(),
                     )
-                ),
+                )
             ),
             onEvent = {}
         )

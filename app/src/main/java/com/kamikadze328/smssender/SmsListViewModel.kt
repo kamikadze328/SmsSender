@@ -14,7 +14,6 @@ import com.kamikadze328.smssender.data.common.PermissionManager
 import com.kamikadze328.smssender.data.common.sms.SmsRepository
 import com.kamikadze328.smssender.data.common.sms.SmsToStringConverter
 import com.kamikadze328.smssender.model.Sms
-import com.kamikadze328.smssender.ui.SmsList
 import com.kamikadze328.smssender.ui.SmsUi
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +49,7 @@ class SmsListViewModel(
                 val smsUi = sms.map { it.toUi() }.toImmutableList()
                 _uiState.update {
                     it.copy(
-                        sms = SmsList(smsUi),
+                        list = smsUi,
                         isLoading = false,
                     )
                 }
@@ -62,6 +61,7 @@ class SmsListViewModel(
 
     private fun Sms.toUi(): SmsUi {
         return SmsUi(
+            id = info.messageId,
             receiverName = smsToStringConverter.makeReceiverString(this, true),
             senderName = smsToStringConverter.makeSenderString(this, true),
             text = info.message,
