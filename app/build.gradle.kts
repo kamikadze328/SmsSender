@@ -1,27 +1,31 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.compose)
 }
 
+val localProperties = Properties().apply {
+    rootProject.file("local.properties")
+        .inputStream()
+        .use { load(it) }
+}
+
 android {
     namespace = "com.kamikadze328.smssender"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
-        val localProperties = gradleLocalProperties(rootDir, providers)
         val tgChatId = localProperties.getProperty("tg.chat.id").orEmpty()
         val tgBotId = localProperties.getProperty("tg.bot.id").orEmpty()
         buildConfigField("String", "TG_CHAT_ID", tgChatId)
         buildConfigField("String", "TG_BOT_ID", tgBotId)
 
         applicationId = "com.kamikadze328.smssender"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -29,7 +33,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -39,38 +44,38 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         buildConfig = true
     }
-    room {
-        schemaDirectory("$projectDir/schemas")
-    }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 dependencies {
     // Android
+    implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.core)
     implementation(libs.appcompat)
     implementation(libs.material3)
     implementation(libs.activity)
     implementation(libs.lifecycle.service)
     implementation(libs.lifecycle.viewmodel)
+    implementation(libs.androidx.work)
 
     // Compose
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
-    implementation(libs.compose.material)
     implementation(libs.compose.tooling)
     debugImplementation(libs.compose.preview)
     implementation(libs.compose.livedata)
+    implementation(libs.material.icons.extended)
 
     // Kotlin
     implementation(libs.coroutines.android)
@@ -85,7 +90,6 @@ dependencies {
     // 3rd party
     implementation(platform(libs.ktor.bom))
     implementation(libs.ktor.andoird)
-    implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
     implementation(libs.ktor.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
@@ -94,4 +98,5 @@ dependencies {
     implementation(libs.koin)
     implementation(libs.koin.core)
     implementation(libs.koin.core.coroutines)
+    implementation(libs.koin.worker)
 }

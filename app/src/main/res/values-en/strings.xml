@@ -9,4 +9,6 @@
     <string name="sms_to">To:</string>
     <string name="sms_sent_when">When:</string>
     <string name="all_sms_sent">All SMS sent</string>
+    <string name="battery_low">Battery level is low: %d%%</string>
+    <string name="charge_device">Please connect the device to a charger, or you will not be able to receive messages.</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.Application
 import com.kamikadze328.smssender.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 
 class App : Application() {
@@ -13,7 +14,13 @@ class App : Application() {
         startKoin {
             androidLogger()
             androidContext(this@App)
+            workManagerFactory()
             modules(appModule)
         }
+        scheduleBatteryStatus()
+    }
+
+    private fun scheduleBatteryStatus() {
+        BatteryMonitorWorker.setup(this)
     }
 }

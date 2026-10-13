@@ -6,27 +6,27 @@ import com.kamikadze328.smssender.R
 import com.kamikadze328.smssender.model.Sms
 
 class SmsToStringConverter(
-    private val applicationContext: Context,
+    private val context: Context,
 ) {
     companion object {
-        private const val INBOX_TRAY_EMOJI = "\uD83D\uDCE4"
-        private const val POSTBOX_EMOJI = "\uD83D\uDCEE"
-        private const val CALENDAR_EMOJI = "\uD83D\uDCC6"
+        private const val EMOJI_INBOX_TRAY = "\uD83D\uDCE4"
+        private const val EMOJI_POSTBOX = "\uD83D\uDCEE"
+        private const val EMOJI_CALENDAR = "\uD83D\uDCC6"
     }
 
     fun convert(sms: Sms): String {
-        val senderTitle = applicationContext.getString(R.string.sms_sender)
+        val senderTitle = context.getString(R.string.sms_sender)
         val senderInfo = makeSenderString(sms)
-        val receiverTitle = applicationContext.getString(R.string.sms_receiver)
+        val receiverTitle = context.getString(R.string.sms_receiver)
         val receiverInfo = makeReceiverString(sms)
-        val dateTimeTitle = applicationContext.getString(R.string.sms_sent_when)
+        val dateTimeTitle = context.getString(R.string.sms_sent_when)
         val dateTime = makeDateTimeString(sms)
         val message = sms.info.message
 
         return buildString {
-            appendLine("$INBOX_TRAY_EMOJI <b>$senderTitle</b> $senderInfo")
-            appendLine("$POSTBOX_EMOJI <b>$receiverTitle</b> $receiverInfo")
-            appendLine("$CALENDAR_EMOJI <b>$dateTimeTitle</b> $dateTime")
+            appendLine("$EMOJI_INBOX_TRAY <b>$senderTitle</b> $senderInfo")
+            appendLine("$EMOJI_POSTBOX <b>$receiverTitle</b> $receiverInfo")
+            appendLine("$EMOJI_CALENDAR <b>$dateTimeTitle</b> $dateTime")
             appendLine("___________________________________")
             appendLine()
             append(message)
@@ -42,7 +42,7 @@ class SmsToStringConverter(
 
             !phone.isNullOrBlank() -> phone
             !name.isNullOrBlank() -> name
-            else -> applicationContext.getString(R.string.sms_sender_unknown)
+            else -> context.getString(R.string.sms_sender_unknown)
         }
     }
 
@@ -55,7 +55,7 @@ class SmsToStringConverter(
             !name.isNullOrBlank() && !phone.isNullOrBlank() -> name
             !phone.isNullOrBlank() -> phone
             !name.isNullOrBlank() -> name
-            else -> applicationContext.getString(R.string.sms_receiver_unknown)
+            else -> context.getString(R.string.sms_receiver_unknown)
         }
     }
 

@@ -10,5 +10,6 @@
     <string name="sms_to">K:</string>
     <string name="sms_sent_when">Когда:</string>
     <string name="all_sms_sent">Все сообщения отправлены</string>
-
+    <string name="battery_low">Низкий уровень заряда батареи: %d</string>
+    <string name="charge_device">Пожалуйста, подключите устройство к зарядному устройству или вы не сможете получать сообщения.</string>
 </resources>

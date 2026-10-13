@@ -1,21 +1,24 @@
 package com.kamikadze328.smssender.ui
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.kamikadze328.smssender.BatteryMonitorWorker
 import com.kamikadze328.smssender.SmsListUiEvent
 import com.kamikadze328.smssender.SmsListViewModel
 import com.kamikadze328.smssender.SmsListUiState
 import com.kamikadze328.smssender.R
+import com.kamikadze328.smssender.ui.icons.RefreshFilled
 import com.kamikadze328.smssender.ui.theme.SmsSenderTheme
 import kotlinx.collections.immutable.persistentListOf
 import java.util.Date
@@ -37,11 +40,21 @@ private fun SmsListScreenUi(
     uiState: SmsListUiState,
     onEvent: (SmsListUiEvent) -> Unit,
 ) {
+    val context = LocalContext.current
+
     Scaffold(
         topBar = { MyAppBar(uiState = uiState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = { onEvent(SmsListUiEvent.OnRefreshClicked) }) {
-                Icon(Icons.Default.Refresh, "")
+            FloatingActionButton(onClick = {
+                onEvent(SmsListUiEvent.OnRefreshClicked)
+
+                val request = OneTimeWorkRequestBuilder<BatteryMonitorWorker>().build()
+                WorkManager.getInstance(context).enqueue(request)
+            }) {
+                Icon(
+                    imageVector = RefreshFilled,
+                    contentDescription = "",
+                )
             }
         },
     ) { innerPadding ->
